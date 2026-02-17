@@ -6,7 +6,7 @@ on:
     branches:
       - 'main'
     paths:
-      - 'triton-platform/k2sobot/**'
+      - 'k2sobot/**'
     tags:
       - 'k2sobot-v*'
 
@@ -48,7 +48,7 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v4
         with:
-          context: triton-platform/k2sobot
+          context: k2sobot
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}

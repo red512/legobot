@@ -4,13 +4,11 @@ on:
   push:
     branches: [ main, develop ]
     paths:
-      - 'triton-platform/k2sobot/**'
-      - 'triton-platform/bnfrbot/**'
-      - 'triton-platform/bnfrmcp/**'
+      - 'k2sobot/**'
   pull_request:
     branches: [ main ]
     paths:
-      - 'triton-platform/k2sobot/**'
+      - 'k2sobot/**'
   workflow_dispatch:
     inputs:
       environment:
@@ -39,14 +37,8 @@ jobs:
       matrix:
         service:
           - name: k2sobot
-            dockerfile: triton-platform/k2sobot/Dockerfile
-            context: triton-platform/k2sobot
-          - name: bnfrbot
-            dockerfile: triton-platform/bnfrbot/Dockerfile
-            context: triton-platform/bnfrbot
-          - name: bnfrmcp
-            dockerfile: triton-platform/bnfrmcp/Dockerfile
-            context: triton-platform/bnfrmcp
+            dockerfile: k2sobot/Dockerfile
+            context: k2sobot
 
     steps:
     - name: Checkout repository
@@ -104,7 +96,7 @@ jobs:
     - name: Checkout GitOps repository
       uses: actions/checkout@v4
       with:
-        repository: ${{ github.repository_owner }}/triton-gitops
+        repository: ${{ github.repository_owner }}/legobot-gitops
         token: ${{ secrets.GITOPS_TOKEN }}
         path: gitops
 
