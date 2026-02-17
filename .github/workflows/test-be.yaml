@@ -48,13 +48,91 @@ jobs:
         run: |
           pkill -f app.py  # Stop the server gracefully
 
-      - name: Notify on success
-        if: success()
-        run: |
-          curl -X POST -H 'Content-type: application/json' --data '{"text":"The BE tests are succeeded for ${{ github.repository }} :rocket:"}' ${{ secrets.SLACK_WEBHOOK_URL }}
+  security:
+    needs: tests
+    runs-on: ubuntu-latest
+    outputs:
+      has-vulnerabilities: ${{ steps.scan.outputs.has-vulnerabilities }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Notify on failure
-        if: failure()
-        run: |
-          curl -X POST -H 'Content-type: application/json' --data '{"text":"The BE tests are failed for ${{ github.repository }} :x:"}' ${{ secrets.SLACK_WEBHOOK_URL }}
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
 
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r be-flask/requirements.txt
+
+      - name: Security scan with Grype
+        id: scan
+        run: |
+          # Install Grype
+          curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
+
+          echo "## Security Scan Results" >> $GITHUB_STEP_SUMMARY
+          VULNS_FOUND=false
+
+          # Grype scan
+          cd be-flask && pip freeze > requirements-freeze.txt
+          echo "### 🔍 Grype Vulnerability Scan" >> $GITHUB_STEP_SUMMARY
+          if grype . --fail-on medium --quiet; then
+            echo "✅ No vulnerabilities found" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ Vulnerabilities detected" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            grype . --by-cve >> $GITHUB_STEP_SUMMARY || true
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            VULNS_FOUND=true
+          fi
+
+          echo "has-vulnerabilities=$VULNS_FOUND" >> $GITHUB_OUTPUT
+
+  notify:
+    needs: [tests, security]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send notification
+        run: |
+          # Determine status
+          TEST_OK=$([[ "${{ needs.tests.result }}" == "success" ]] && echo "true" || echo "false")
+          SECURITY_OK=$([[ "${{ needs.security.result }}" == "success" ]] && echo "true" || echo "false")
+          HAS_VULNS="${{ needs.security.outputs.has-vulnerabilities }}"
+
+          # Build status lines
+          if [[ "$TEST_OK" == "true" ]]; then
+            TEST_LINE="**Tests:** ✅ Passed"
+          else
+            TEST_LINE="**Tests:** ❌ Failed"
+          fi
+
+          if [[ "$SECURITY_OK" == "true" && "$HAS_VULNS" != "true" ]]; then
+            SECURITY_LINE="**Security:** ✅ Clean"
+          elif [[ "$SECURITY_OK" == "true" && "$HAS_VULNS" == "true" ]]; then
+            SECURITY_LINE="**Security:** ⚠️ Vulnerabilities detected"
+          else
+            SECURITY_LINE="**Security:** ❌ Scan failed"
+          fi
+
+          # Overall status
+          if [[ "$TEST_OK" == "true" && "$SECURITY_OK" == "true" ]]; then
+            if [[ "$HAS_VULNS" == "true" ]]; then
+              HEADER="⚠️ Tests passed - Security vulnerabilities found for ${{ github.repository }}"
+            else
+              HEADER="✅ All checks passed for ${{ github.repository }}"
+            fi
+          else
+            HEADER="❌ Pipeline failed for ${{ github.repository }}"
+          fi
+
+          WORKFLOW_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+          MESSAGE="$HEADER\\n$TEST_LINE\\n$SECURITY_LINE\\n<$WORKFLOW_URL|View Pipeline Details>"
+
+          curl -X POST -H 'Content-type: application/json' \
+            --data "{\"text\":\"$MESSAGE\"}" \
+            ${{ secrets.SLACK_WEBHOOK_URL }}

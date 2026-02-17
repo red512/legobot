@@ -15,7 +15,6 @@
 ⚓ **Kubernetes Management** - Interactive kubectl operations via Slack UI  
 🚀 **GitOps Integration** - ArgoCD application management and monitoring  
 🛠️ **Modular Tools** - Auto-discovering tool system for easy extensibility  
-🔐 **Security First** - Non-root Docker container with proper permissions  
 ⚡ **Real-time** - Instant responses via Slack webhooks and ngrok tunneling  
 
 ## 🏗️ Architecture
