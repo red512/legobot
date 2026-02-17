@@ -65,16 +65,20 @@ cd k2sobot
 
 # Create virtual environment
 python3 -m venv env
-source env/bin/activate  # Windows: env\Scripts\activate
+source env/bin/activate  
 
 # Install dependencies
 pip install -r requirements.txt
+
 
 # Set environment variables
 export SLACK_SIGNING_SECRET="your_slack_signing_secret"
 export SLACK_BOT_TOKEN="xoxb-your_bot_token"
 export VERIFICATION_TOKEN="your_verification_token"
 export GEMINI_API_KEY="your_gemini_api_key"
+
+# Expose bot with ngrok
+ngrok http 3000 --url https://default.internal
 
 # Run the bot
 python3 main.py
@@ -112,6 +116,11 @@ docker run -d \
   -e GEMINI_API_KEY="your_gemini_api_key" \
   --name k2sobot \
   k2sobot:latest
+
+
+
+# Expose bot with ngrok
+ngrok http 3000 --url https://default.internal
 ```
 
 
@@ -139,7 +148,7 @@ im:history
 ngrok http 3000
 ```
 
-> **⚠️ Note:** ngrok is for testing only. Production needs proper domain.
+> **⚠️ Note:** All development environments require ngrok for Slack webhook tunneling unless you have a dedicated DNS record. Production deployments need a proper domain.
 
 Copy the HTTPS URL and configure in your Slack app:
 
