@@ -3,6 +3,10 @@
 [![Python](https://img.shields.io/badge/Python-3.13-blue.svg)](https://python.org)
 [![Flask](https://img.shields.io/badge/Flask-Latest-green.svg)](https://flask.palletsprojects.com/)
 
+
+<img width="767" height="473" alt="image" src="https://github.com/user-attachments/assets/e085d5d6-18f7-429d-af53-baa66dc8e9f3" />
+
+
 > 🚀 **AI-Powered Slack Bot for Kubernetes & GitOps Operations** 
 > 
 > Combines interactive kubectl operations with Google Gemini AI for natural language DevOps interactions.
