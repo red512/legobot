@@ -5,6 +5,7 @@ from google.generativeai.types import content_types
 
 # Import tool registry for automatic tool discovery
 from tools.registry import discover_and_get_tools, get_function_map, execute_tool
+from system_prompt import get_system_prompt
 
 logger = logging.getLogger(__name__)
 
@@ -29,8 +30,15 @@ def get_gemini_model_with_tools():
         # Automatically discover all available tools
         tools = discover_and_get_tools()
 
-        _model = genai.GenerativeModel('gemini-2.5-flash-lite', tools=tools)
-        logger.info(f"✅ Initialized Gemini with {len(tools)} tools")
+        # Get system prompt
+        system_prompt = get_system_prompt()
+
+        _model = genai.GenerativeModel(
+            'gemini-2.5-flash-lite',
+            tools=tools,
+            system_instruction=system_prompt
+        )
+        logger.info(f"✅ Initialized Gemini with {len(tools)} tools and system prompt")
     
     return _model
 

@@ -286,6 +286,49 @@ k2sobot/
     ├── 😄 joke_tools.py         # Programming humor
     ├── ⚓ k8s_tools.py          # Kubernetes operations
     └── 🚀 argo_tool.py         # ArgoCD GitOps tools
+
+## Kubernetes Deployment
+
+### Infrastructure Structure
+
+legobot-gitops/
+├── argocd/              # ArgoCD application definitions
+│   └── apps/            # Application manifests
+└── helm/                # Helm charts
+    ├── backend-helm-chart/
+    └── k2sobot-helm-chart/
+
+legobot-terraform/
+├── argocd.tf            # ArgoCD setup
+├── eks.tf               # EKS cluster configuration
+├── iam.tf               # IAM roles and policies
+├── vpc.tf               # VPC networking
+└── helm-values/         # Helm value files
+
+### Working with Sealed Secrets
+
+All sensitive configuration is managed through Bitnami Sealed Secrets for secure GitOps workflows.
+
+```bash
+# Create secret (don't apply)
+kubectl create secret generic k2sobot-secrets -n k2so \
+  --from-literal=SLACK_BOT_TOKEN="xoxb-your-token" \
+  --from-literal=SLACK_SIGNING_SECRET="your-secret" \
+  --from-literal=VERIFICATION_TOKEN="your-token" \
+  --from-literal=GEMINI_API_KEY="your-api-key" \
+  --from-literal=ARGOCD_PASSWORD="your-password" \
+  --dry-run=client -o yaml > k2sobot-secrets.yaml
+
+# Seal the secret
+kubeseal --controller-name sealed-secrets \
+  --controller-namespace sealed-secrets \
+  --format yaml < k2sobot-secrets.yaml > sealed-k2sobot-secrets.yaml
+
+# Apply sealed secret (safe to commit)
+kubectl apply -f sealed-k2sobot-secrets.yaml
+```
+
+> **Important:** Never commit plain `*-secrets.yaml` files. Only commit `sealed-*-secrets.yaml` files.
 ```
 
 <div align="center">
