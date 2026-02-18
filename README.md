@@ -342,7 +342,16 @@ kubectl apply -f sealed-k2sobot-secrets.yaml
 ```
 
 > **Important:** Never commit plain `*-secrets.yaml` files. Only commit `sealed-*-secrets.yaml` files.
-```
+
+## 🧪 Testing
+
+The example application includes simple tests with automated CI/CD pipeline featuring:
+- **Unit & Integration Tests** for core functionality
+- **Security Scanning** with Grype vulnerability detection
+- **Slack Notifications** for test results and Docker publishing status
+
+### Test Results
+<!-- Add your test screenshots here -->
 
 <div align="center">
 
