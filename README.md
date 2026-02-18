@@ -350,11 +350,12 @@ The example application includes simple tests with automated CI/CD pipeline feat
 - **Security Scanning** with Grype vulnerability detection
 - **Slack Notifications** for test results and Docker publishing status
 
-### Test Results
+### Test Results Examples
 <img width="891" height="194" alt="image" src="https://github.com/user-attachments/assets/e5b655eb-4e86-48fa-b16e-dc5214e6c21c" />
 
 
-<img width="1066" height="707" alt="image" src="https://github.com/user-attachments/assets/b819b13c-f2d1-423f-b312-d97468de8364" />
+<img width="849" height="455" alt="image" src="https://github.com/user-attachments/assets/ad0001be-b5f9-4407-a754-006bdc6c9543" />
+
 
 <div align="center">
 
