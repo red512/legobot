@@ -347,7 +347,7 @@ kubectl apply -f sealed-k2sobot-secrets.yaml
 ```
 
 
-## arcgocd will look like this
+## arcgocd 
 
 <img width="1813" height="652" alt="image" src="https://github.com/user-attachments/assets/8180e5f2-501f-4575-a600-6b3fbbeda6bc" />
 
