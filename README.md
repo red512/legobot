@@ -346,15 +346,14 @@ kubeseal --controller-name sealed-secrets \
 kubectl apply -f sealed-k2sobot-secrets.yaml
 ```
 
+> **Important:** Never commit plain `*-secrets.yaml` files. Only commit `sealed-*-secrets.yaml` files.
+
 
 ## arcgocd 
 
 <img width="1813" height="652" alt="image" src="https://github.com/user-attachments/assets/8180e5f2-501f-4575-a600-6b3fbbeda6bc" />
 
 <img width="1924" height="891" alt="image" src="https://github.com/user-attachments/assets/82ec7ca4-679f-4972-89d4-34e03b76296d" />
-
-
-> **Important:** Never commit plain `*-secrets.yaml` files. Only commit `sealed-*-secrets.yaml` files.
 
 ## 🧪 Testing
 
