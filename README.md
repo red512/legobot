@@ -3,6 +3,11 @@
 [![Python](https://img.shields.io/badge/Python-3.13-blue.svg)](https://python.org)
 [![Flask](https://img.shields.io/badge/Flask-Latest-green.svg)](https://flask.palletsprojects.com/)
 
+## 📚 Related Repositories
+
+- **[legobot](https://github.com/red512/legobot)** - Main application repository
+- **[legobot-gitops](https://github.com/red512/legobot-gitops)** - GitOps configurations and Helm charts
+- **[legobot-terraform](https://github.com/red512/legobot-terraform)** - Infrastructure as Code with Terraform
 
 <img width="767" height="473" alt="image" src="https://github.com/user-attachments/assets/e085d5d6-18f7-429d-af53-baa66dc8e9f3" />
 
