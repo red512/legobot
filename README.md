@@ -346,6 +346,9 @@ kubeseal --controller-name sealed-secrets \
 kubectl apply -f sealed-k2sobot-secrets.yaml
 ```
 
+<img width="1813" height="652" alt="image" src="https://github.com/user-attachments/assets/8180e5f2-501f-4575-a600-6b3fbbeda6bc" />
+
+
 > **Important:** Never commit plain `*-secrets.yaml` files. Only commit `sealed-*-secrets.yaml` files.
 
 ## 🧪 Testing
@@ -360,6 +363,8 @@ The example application includes simple tests with automated CI/CD pipeline feat
 
 
 <img width="849" height="455" alt="image" src="https://github.com/user-attachments/assets/ad0001be-b5f9-4407-a754-006bdc6c9543" />
+
+<img width="1924" height="891" alt="image" src="https://github.com/user-attachments/assets/82ec7ca4-679f-4972-89d4-34e03b76296d" />
 
 
 <div align="center">
